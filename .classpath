@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="develop/src"/>
+	<classpathentry kind="lib" path="develop/dist/Bailiff-dl.jar"/>
+	<classpathentry kind="lib" path="develop/dist/Bailiff.jar"/>
+	<classpathentry kind="lib" path="develop/dist/Dexter.jar"/>
+	<classpathentry kind="lib" path="develop/lib/jini-core.jar"/>
+	<classpathentry kind="lib" path="develop/lib/jini-ext.jar"/>
+	<classpathentry kind="lib" path="develop/lib/reggie-dl.jar"/>
+	<classpathentry kind="lib" path="test/cbs/Bailiff-dl.jar"/>
+	<classpathentry kind="lib" path="test/cbs/Bailiff.jar"/>
+	<classpathentry kind="lib" path="test/cbs/Dexter.jar"/>
+	<classpathentry kind="lib" path="test/cbs/jini-core.jar"/>
+	<classpathentry kind="lib" path="test/cbs/jini-ext.jar"/>
+	<classpathentry kind="lib" path="test/cbs/reggie-dl.jar"/>
+	<classpathentry kind="lib" path="test/lib/JarRunner.jar"/>
+	<classpathentry kind="lib" path="test/lib/jini-core.jar"/>
+	<classpathentry kind="lib" path="test/lib/jini-ext.jar"/>
+	<classpathentry kind="lib" path="test/lib/reggie-dl.jar"/>
+	<classpathentry kind="lib" path="test/lib/reggie.jar"/>
+	<classpathentry kind="lib" path="test/lib/tools.jar"/>
+	<classpathentry kind="output" path="develop/build"/>
+</classpath>
