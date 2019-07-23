@@ -5,6 +5,7 @@ package tag.dexter;
 
 import java.io.*;		// TODO remove the asterisk
 import java.util.Random;
+import java.util.UUID;
 
 import net.jini.core.lookup.*;
 import net.jini.lookup.*;
@@ -127,6 +128,24 @@ public class Dexter implements Serializable
     if (debug)
       System.out.printf("%s(%d):%s%n", id, jumpCount, msg);
   }
+  
+  
+  /**
+   * This characterized the player 
+   * @return if it is IT or NOT IT
+   */
+  protected Boolean definecharacter() {
+	  Random rand = new Random();
+	  int n = rand.nextInt(50);
+	  if(n<=25) {
+		  System.out.println("I am NOT IT");
+		  return false;		  
+	  }
+	  else {
+		  System.out.println("I am IT");
+		  return true;
+	  }
+  }
 
   /**
    * Creates a new Dexter. All the constructor needs to do is to
@@ -178,11 +197,18 @@ public class Dexter implements Serializable
     jumpCount++;
     
     Random rnd = new Random ();
-
     // Create a Jini service discovery manager to help us interact with
     // the Jini lookup service.
     SDM = new ServiceDiscoveryManager (null, null);
+    
+    // define the character IT or NOT IT
+    boolean it=definecharacter();
+    
+    // Players identifiers 
+    UUID uid=UUID.randomUUID();
+	System.out.println("Here is my uuid: " + uid);
 
+    
     // Loop forever until we have successfully jumped to a Bailiff.
     for (;;) {
 
@@ -202,20 +228,20 @@ public class Dexter implements Serializable
 
       do {
 
-	if (0 < retryInterval) {
-	  debugMsg("No Bailiffs detected - sleeping.");
-	  snooze(retryInterval);
-	  debugMsg("Waking up, looking for Bailiffs.");
-	}
+		if (0 < retryInterval) {
+		  debugMsg("No Bailiffs detected - sleeping.");
+		  snooze(retryInterval);
+		  debugMsg("Waking up, looking for Bailiffs.");
+		}
 
-	// Put our query, expressed as a service template, to the Jini
-	// service discovery manager. 
-
-	svcItems = SDM.lookup (bailiffTemplate, maxResults, null);
-	retryInterval = retrySleep;
-
-	// If no lookup servers or bailiffs are found, go back up to
-	// the beginning of the loop, sleep a bit, and then try again.
+		// Put our query, expressed as a service template, to the Jini
+		// service discovery manager. 
+	
+		svcItems = SDM.lookup (bailiffTemplate, maxResults, null);
+		retryInterval = retrySleep;
+	
+		// If no lookup servers or bailiffs are found, go back up to
+		// the beginning of the loop, sleep a bit, and then try again.
 
       } while (svcItems.length == 0);
 
