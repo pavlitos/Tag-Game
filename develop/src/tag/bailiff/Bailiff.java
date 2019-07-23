@@ -47,6 +47,9 @@ public class Bailiff
   implements
     tag.bailiff.BailiffInterface // for clients
 {
+
+   // Number of 
+  protected int NumberOfAgents= 0;
   // When debug is true, trace and diagnostic messages are printed.
   protected boolean debug = false;
 
@@ -205,6 +208,10 @@ public class Bailiff
 
     propertyMap.put (key.toLowerCase (), value);
   }
+  
+  public int numberOfclients() {
+	  return NumberOfAgents;
+  }
 
   /**
    * Entry point for remote clients who want to pass an object to be
@@ -218,7 +225,7 @@ public class Bailiff
    * @throws NoSuchMethodException Thrown if the specified entry method
    * does not exist with the expected signature.
    */
-  public void migrate (Object obj, String cb, Object [] args)
+  public void migrate (Object obj,UUID uid, String cb, Object [] args)
     throws
       java.rmi.RemoteException, NoSuchMethodException
   {
@@ -230,8 +237,11 @@ public class Bailiff
     
     Agitator agt = new Agitator (obj, cb, args);
     agt.initialize ();
+    NumberOfAgents++;
     agt.start ();
   }
+  
+  
 
   /* ================ C o n s t r u c t o r ================ */
 

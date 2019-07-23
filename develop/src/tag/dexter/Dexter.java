@@ -206,8 +206,7 @@ public class Dexter implements Serializable
     
     // Players identifiers 
     UUID uid=UUID.randomUUID();
-	System.out.println("Here is my uuid: " + uid);
-
+    
     
     // Loop forever until we have successfully jumped to a Bailiff.
     for (;;) {
@@ -248,16 +247,17 @@ public class Dexter implements Serializable
       // Now, at least one Bailiff has been found.
 
       debugMsg("Found " + svcItems.length + " Bailiffs");
-
+     
       // Enter a loop in which we:
       // - randomly pick one Bailiff
       // - pings it to see if it is alive
       // - migrate to it, or try another one
 
       int nofItems = svcItems.length; // nof items remaining
-
-      while (0 < nofItems) {
-
+     
+      
+    while (0 < nofItems) {
+    	 
 	// Randomly pick one of the remaining entries
 	int idx = rnd.nextInt(nofItems);
 
@@ -287,25 +287,62 @@ public class Dexter implements Serializable
 	if (!accepted) {
 	  svcItems[idx] = svcItems[--nofItems];
 	}
-	else {
+	else {	
+	 // Here is what an "IT" should do
+	 // Go and find a bailiff with players
+	 if(it==true) {
+	    //ask the bailiff for current list of players
+		debugMsg("Checking if there are players...");
+	    snooze(restraintSleepMs);
+		int numberOfclients=bfi.numberOfclients();
+		debugMsg("How many clients on that balif: " + numberOfclients);
+		if(numberOfclients!=0) {
+		
+			debugMsg("Trying to jump...");
+			try {
+				
+			    bfi.migrate(this, uid, "topLevel", new Object [] {});
+			    // SUCCESS
+			    do {
+			    	
+			    }
+			    while(numberOfclients!=0);
+			    SDM.terminate();	// shut down Service Discovery Manager
+			    return;		// return and end this thread
+			  }
+			  catch (java.rmi.RemoteException rex) {
+			    if (debug) 
+			      rex.printStackTrace();
+			  }
+			  catch (java.lang.NoSuchMethodException nmx) {
+			    if (debug)
+			      nmx.printStackTrace();
+			  }
+		}
+        // query each player if the are "it" or "not it"
 
-	  debugMsg("Trying to jump...");
+	    //Try to tag a player
+	 }
+	 // Here is what a "NOT IT" should do
+	 else {
+		debugMsg("Trying to jump...");
+		
+		try {
+		    bfi.migrate(this, uid, "topLevel", new Object [] {});
+		    // SUCCESS
+		    SDM.terminate();	// shut down Service Discovery Manager
+		    return;		// return and end this thread
+		  }
+		  catch (java.rmi.RemoteException rex) {
+		    if (debug) 
+		      rex.printStackTrace();
+		  }
+		  catch (java.lang.NoSuchMethodException nmx) {
+		    if (debug)
+		      nmx.printStackTrace();
+		  }
 
-	  try {
-	    bfi.migrate(this, "topLevel", new Object [] {});
-	    // SUCCESS
-	    SDM.terminate();	// shut down Service Discovery Manager
-	    return;		// return and end this thread
-	  }
-	  catch (java.rmi.RemoteException rex) {
-	    if (debug) 
-	      rex.printStackTrace();
-	  }
-	  catch (java.lang.NoSuchMethodException nmx) {
-	    if (debug)
-	      nmx.printStackTrace();
-	  }
-
+	 }
 	  debugMsg("Jump failed!");
 	}
       }	// while candidates remain
